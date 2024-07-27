@@ -30,40 +30,42 @@ class AliucordPage : SettingsPage() {
         super.onViewBound(view)
 
         setActionBarTitle("Aliucord")
-        setActionBarSubtitle("Aliucord Settings")
+        setActionBarSubtitle("Ajustes de Aliucord")
 
         val ctx = view.context
 
-        addHeader(ctx, "Aliucord Settings")
+        addHeader(ctx, "Ajustes de Aliucord")
         addSwitch(ctx,
             AUTO_DISABLE_ON_CRASH_KEY,
-            "Automatically disable plugins on crash",
-            "When a plugin is found to be causing crashes, it will automatically be disabled",
+            "Desactivar automaticamente complementos con errores fatales",
+            "Cuando un complemento detenga Aliucord abruptamente, será desactivado
+            automaticamente.",
             true
         )
-        addSwitch(ctx, AUTO_UPDATE_ALIUCORD_KEY, "Automatically update Aliucord", null)
-        addSwitch(ctx, AUTO_UPDATE_PLUGINS_KEY, "Automatically update plugins", null)
+        //addSwitch(ctx, AUTO_UPDATE_ALIUCORD_KEY, "Actualizar Aliucord automaticamente", null)
+        addSwitch(ctx, AUTO_UPDATE_PLUGINS_KEY, "Actualizar plugins automaticamente", null)
 
         if (StoreStream.getUserSettings().isDeveloperMode) {
             addDivider(ctx)
-            addHeader(ctx, "Developer Settings")
+            addHeader(ctx, "Ajustes de desarrollador")
             addSwitch(
                 ctx,
                 ALIUCORD_FROM_STORAGE_KEY,
-                "Use Aliucord from storage",
-                "Meant for developers. Do not enable unless you know what you're doing. If someone else is telling you to do this, you are likely being scammed."
+                "Usar Aliucord desde el almacenamiento principal",
+                "Esta función es principalmente para desarrolladores, asi que no la actives a menos que sepas lo que haces. Si alguien
+                te dice que hagas esto, probablemente te esten engañando."
             )
         }
 
         addDivider(ctx)
-        addHeader(ctx, "Links")
-        addLink(ctx, "Source Code", R.e.ic_account_github_white_24dp) {
+        addHeader(ctx, "Enlaces")
+        addLink(ctx, "Código fuente", R.e.ic_account_github_white_24dp) {
             Utils.launchUrl(Constants.ALIUCORD_GITHUB_REPO)
         }
-        addLink(ctx, "Support Server", R.e.ic_help_24dp) {
+        addLink(ctx, "Servidor de soporte", R.e.ic_help_24dp) {
             Utils.joinSupportServer(it.context)
         }
-        addLink(ctx, "Support us on GitHub Sponsors", R.e.ic_heart_24dp) {
+        addLink(ctx, "Apoyanos en GitHub Sponsors", R.e.ic_heart_24dp) {
             Utils.launchUrl("https://github.com/sponsors/Juby210")
         }
     }

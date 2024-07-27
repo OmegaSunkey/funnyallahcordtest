@@ -125,23 +125,23 @@ public final class Main {
             var font = ResourcesCompat.getFont(context, Constants.Fonts.whitney_medium);
 
             layout.addView(
-                makeSettingsEntry(font, context, "Settings", R.e.ic_behavior_24dp, AliucordPage.class),
+                makeSettingsEntry(font, context, "Ajustes", R.e.ic_behavior_24dp, AliucordPage.class),
                 baseIndex++
             );
             layout.addView(
-                makeSettingsEntry(font, context, "Plugins", R.e.ic_clear_all_white_24dp, Plugins.class),
+                makeSettingsEntry(font, context, "Complementos", R.e.ic_clear_all_white_24dp, Plugins.class),
                 baseIndex++
             );
             layout.addView(
-                makeSettingsEntry(font, context, "Updater", R.e.ic_file_download_white_24dp, Updater.class),
+                makeSettingsEntry(font, context, "Actualizaciones", R.e.ic_file_download_white_24dp, Updater.class),
                 baseIndex++
             );
             layout.addView(
-                makeSettingsEntry(font, context, "Crashes", R.e.ic_history_white_24dp, Crashes.class),
+                makeSettingsEntry(font, context, "Crasheos", R.e.ic_history_white_24dp, Crashes.class),
                 baseIndex++
             );
             layout.addView(
-                makeSettingsEntry(font, context, "Open Debug Log", R.e.ic_audit_logs_24dp, WidgetDebugging.class),
+                makeSettingsEntry(font, context, "Abrir el menú de depuración", R.e.ic_audit_logs_24dp, WidgetDebugging.class),
                 baseIndex
             );
 
@@ -151,7 +151,7 @@ public final class Main {
             versionView.setText(text);
 
             TextView uploadLogs = layout.findViewById(Utils.getResId("upload_debug_logs", "id"));
-            uploadLogs.setText("Aliucord Support Server");
+            uploadLogs.setText("Servidor de soporte de Aliucord");
             uploadLogs.setOnClickListener(e -> Utils.joinSupportServer(e.getContext()));
         }));
 

@@ -28,14 +28,14 @@ import com.google.android.material.snackbar.Snackbar;
 import com.lytefast.flexinput.R;
 
 public class Updater extends SettingsPage {
-    private String stateText = "No new updates found";
+    private String stateText = "No se encontró actualizaciones";
 
     @Override
     @SuppressLint("SetTextI18n")
     public void onViewBound(View view) {
         super.onViewBound(view);
 
-        setActionBarTitle("Updater");
+        setActionBarTitle("Actualizaciones");
         setActionBarSubtitle(stateText);
 
         var context = view.getContext();
@@ -44,10 +44,10 @@ public class Updater extends SettingsPage {
         Utils.threadPool.execute(() -> {
             Snackbar sb;
             if (usingDexFromStorage()) {
-                sb = Snackbar.make(getLinearLayout(), "Updater disabled due to using Aliucord from storage.", Snackbar.LENGTH_INDEFINITE);
+                sb = Snackbar.make(getLinearLayout(), "Aliucord no se puede utilizar por que estás usandolo desde el almacenamiento", Snackbar.LENGTH_INDEFINITE);
             } else if (isDiscordOutdated()) {
                 sb = Snackbar
-                    .make(getLinearLayout(), "Your Base Discord is outdated. Please update using the installer.", BaseTransientBottomBar.LENGTH_INDEFINITE)
+                    .make(getLinearLayout(), "Tu Discord base está desactualizado.", BaseTransientBottomBar.LENGTH_INDEFINITE)
                     .setAction("Open Installer", v -> {
                         var ctx = v.getContext();
                         var i = ctx.getPackageManager().getLaunchIntentForPackage("com.aliucord.installer");
@@ -58,14 +58,14 @@ public class Updater extends SettingsPage {
                     });
             } else if (isAliucordOutdated()) {
                 sb = Snackbar
-                    .make(getLinearLayout(), "Your Aliucord is outdated.", Snackbar.LENGTH_INDEFINITE)
+                    .make(getLinearLayout(), "Tu Aliucord está desactualizado", Snackbar.LENGTH_INDEFINITE)
                     .setAction("Update", v -> Utils.threadPool.execute(() -> {
                         var ctx = v.getContext();
                         try {
                             updateAliucord(ctx);
-                            Utils.showToast("Successfully updated Aliucord.");
+                            Utils.showToast("¡Actualizado exitosamente!");
                             Snackbar rb = Snackbar
-                                .make(getLinearLayout(), "Restart to apply the update.", Snackbar.LENGTH_INDEFINITE)
+                                .make(getLinearLayout(), "Reinicia para aplicar la actualizacion.", Snackbar.LENGTH_INDEFINITE)
                                 .setAction("Restart", e -> {
                                     Intent intent = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
                                     context.startActivity(Intent.makeRestartActivityTask(intent.getComponent()));
@@ -76,7 +76,7 @@ public class Updater extends SettingsPage {
                             rb.setActionTextColor(Color.BLACK);
                             rb.show();
                         } catch (Throwable th) {
-                            PluginUpdater.logger.errorToast("Failed to update Aliucord. Check the debug log for more info", th);
+                            PluginUpdater.logger.errorToast("Oops. No se pudo actualizar Aliucord. Revisa el menú de depuración para más información.", th);
                         }
                     }));
             } else return;
@@ -88,33 +88,33 @@ public class Updater extends SettingsPage {
                 .show();
         });
 
-        addHeaderButton("Refresh", Utils.tintToTheme(Utils.getDrawableByAttr(context, R.b.ic_refresh)), item -> {
+        addHeaderButton("Refrescar", Utils.tintToTheme(Utils.getDrawableByAttr(context, R.b.ic_refresh)), item -> {
             item.setEnabled(false);
-            setActionBarSubtitle("Checking for updates...");
+            setActionBarSubtitle("Buscando actualizaciones...");
             Utils.threadPool.execute(() -> {
                 PluginUpdater.cache.clear();
                 PluginUpdater.checkUpdates(false);
                 int updateCount = PluginUpdater.updates.size();
                 if (updateCount == 0)
-                    stateText = "No updates found";
+                    stateText = "Nada para actualizar.";
                 else
-                    stateText = String.format("Found %s", Utils.pluralise(updateCount, "update"));
+                    stateText = String.format("Se encontró %s", Utils.pluralise(updateCount, "actualizaci"));
                 Utils.mainThread.post(this::reRender);
             });
             return true;
         });
 
-        addHeaderButton("Update All", R.e.ic_file_download_white_24dp, item -> {
+        addHeaderButton("Actualizar todo", R.e.ic_file_download_white_24dp, item -> {
             item.setEnabled(false);
-            setActionBarSubtitle("Updating...");
+            setActionBarSubtitle("Actualizando...");
             Utils.threadPool.execute(() -> {
                 int updateCount = PluginUpdater.updateAll();
                 if (updateCount == 0) {
-                    stateText = "No updates found";
+                    stateText = "Nada para actualizar.";
                 } else if (updateCount == -1) {
-                    stateText = "Something went wrong while updating. Please try again";
+                    stateText = "Algo falló durante el proceso. Intentalo de nuevo.";
                 } else {
-                    stateText = String.format("Successfully updated %s!", Utils.pluralise(updateCount, "plugin"));
+                    stateText = "Todos los plugins actualizados!";
                 }
                 Utils.mainThread.post(this::reRender);
             });
@@ -132,7 +132,7 @@ public class Updater extends SettingsPage {
             return;
         }
 
-        stateText = "Found " + Utils.pluralise(updateCount, "update");
+        stateText = "Se encontró " + Utils.pluralise(updateCount, "actualizaci");
         setActionBarSubtitle(stateText);
 
         for (String plugin : PluginUpdater.updates)

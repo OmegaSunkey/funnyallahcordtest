@@ -29,7 +29,7 @@ class Crashes : SettingsPage() {
     @SuppressLint("SetTextI18n")
     override fun onViewBound(view: View) {
         super.onViewBound(view)
-        setActionBarTitle("Crash Logs")
+        setActionBarTitle("Registros de errores fatales")
 
         val context = view.context
         val padding = DimenUtils.defaultPadding
@@ -39,15 +39,15 @@ class Crashes : SettingsPage() {
         val files = dir.listFiles()
         val hasCrashes = files != null && files.isNotEmpty()
 
-        addHeaderButton("Open Crashlog Folder", R.e.ic_open_in_new_white_24dp) {
+        addHeaderButton("Abrir carpeta de registros", R.e.ic_open_in_new_white_24dp) {
             if (!dir.exists() && !dir.mkdir()) {
-                Utils.showToast("Failed to create crashlogs directory!", true)
+                Utils.showToast("¡No se pudo crear la carpeta de registros!", true)
             } else {
                 Utils.launchFileExplorer(dir)
             }
             true
         }
-        headerBar.menu.add("Clear Crashes")
+        headerBar.menu.add("Limpiar registros")
             .setIcon(ContextCompat.getDrawable(context, R.e.ic_delete_24dp))
             .setEnabled(hasCrashes)
             .setOnMenuItemClickListener {
@@ -61,23 +61,24 @@ class Crashes : SettingsPage() {
         if (crashes == null || crashes.isEmpty()) {
             TextView(context, null, 0, R.i.UiKit_Settings_Item_Header).run {
                 isAllCaps = false
-                text = "Woah, no crashes :O"
+                text = "Ni un solo mal día..."
                 typeface = ResourcesCompat.getFont(context, Constants.Fonts.whitney_semibold)
                 gravity = Gravity.CENTER
 
                 linearLayout.addView(this)
             }
             DangerButton(context).run {
-                text = "LET'S CHANGE THAT"
+                text = "¿QUIERES CAMBIAR ESO?"
                 setPadding(p, p, p, p)
                 setOnClickListener {
-                    throw RuntimeException("You fool...")
+                    throw RuntimeException("tonotin")
                 }
                 linearLayout.addView(this)
             }
         } else {
             TextView(context, null, 0, R.i.UiKit_Settings_Item_SubText).run {
-                text = "Hint: Crashlogs are accesible via your file explorer at Aliucord/crashlogs"
+                text = "Recuerda que cada registro es accesible en la
+                carpeta de /sdcard/Aliucord/crashlogs"
                 typeface = ResourcesCompat.getFont(context, Constants.Fonts.whitney_medium)
                 gravity = Gravity.CENTER
                 linearLayout.addView(this)
@@ -95,7 +96,7 @@ class Crashes : SettingsPage() {
                     text = MDUtils.renderCodeBlock(context, SpannableStringBuilder(), null, stacktrace)
                     setOnClickListener {
                         Utils.setClipboard("CrashLog-$timestamp", stacktrace)
-                        Utils.showToast("Copied to clipboard")
+                        Utils.showToast("¡Copiado!")
                     }
                     linearLayout.addView(this)
                 }

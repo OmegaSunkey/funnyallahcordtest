@@ -68,7 +68,7 @@ public class Plugins extends SettingsPage {
                 try {
                     adapter.onSettingsClick(getAdapterPosition());
                 } catch (Throwable th) {
-                    PluginManager.logger.errorToast("Failed to launch plugin settings", th);
+                    PluginManager.logger.errorToast("oops", th);
                 }
             }
 
@@ -239,18 +239,18 @@ public class Plugins extends SettingsPage {
             Plugin p = data.get(position);
             ConfirmDialog dialog = new ConfirmDialog()
                 .setIsDangerous(true)
-                .setTitle("Delete " + p.getName())
-                .setDescription("Are you sure you want to delete this plugin? This action cannot be undone.");
+                .setTitle("Borrar " + p.getName())
+                .setDescription("¿Seguro que quieres borrar este complemento?");
             dialog.setOnOkListener(e -> {
                 File pluginFile = new File(Constants.BASE_PATH + "/plugins/" + p.__filename + ".zip");
                 if (pluginFile.exists() && !pluginFile.delete()) {
-                    PluginManager.logger.errorToast("Failed to delete plugin " + p.getName(), null);
+                    PluginManager.logger.errorToast("oops. No se pudo borrar " + p.getName(), null);
                     return;
                 }
 
                 PluginManager.stopPlugin(p.getName());
                 PluginManager.plugins.remove(p.getName());
-                PluginManager.logger.infoToast("Successfully deleted " + p.getName());
+                PluginManager.logger.infoToast("Se borró " + p.getName());
 
                 dialog.dismiss();
                 data.remove(position);
@@ -260,7 +260,7 @@ public class Plugins extends SettingsPage {
                 if (p.requiresRestart()) Utils.promptRestart();
             });
 
-            dialog.show(fragment.getParentFragmentManager(), "Confirm Plugin Uninstall");
+            dialog.show(fragment.getParentFragmentManager(), "Confirmación de desinstalación");
         }
     }
 
@@ -268,17 +268,17 @@ public class Plugins extends SettingsPage {
     @SuppressLint("SetTextI18n")
     public void onViewBound(View view) {
         super.onViewBound(view);
-        setActionBarTitle("Plugins");
-        setActionBarSubtitle(PluginManager.plugins.size() + " Installed");
+        setActionBarTitle("Complementos");
+        setActionBarSubtitle(PluginManager.plugins.size() + " instalados");
         removeScrollView();
 
         var context = view.getContext();
         int padding = DimenUtils.getDefaultPadding();
 
-        addHeaderButton("Open Plugins Folder", R.e.ic_open_in_new_white_24dp, item -> {
+        addHeaderButton("Abrir carpeta de complementos", R.e.ic_open_in_new_white_24dp, item -> {
             File dir = new File(Constants.PLUGINS_PATH);
             if (!dir.exists() && !dir.mkdir()) {
-                Utils.showToast("Failed to create plugins directory!", true);
+                Utils.showToast("¡No se pudo crear la carpeta de complementos!", true);
                 return true;
             }
             Utils.launchFileExplorer(dir);
@@ -287,7 +287,7 @@ public class Plugins extends SettingsPage {
 
         if (!PluginManager.failedToLoad.isEmpty()) {
             var failedPluginsView = new Button(context);
-            failedPluginsView.setText("Plugin Errors");
+            failedPluginsView.setText("Errores de complementos");
             failedPluginsView.setOnClickListener(v -> Utils.openPage(context, FailedPluginsPage.class));
             addView(failedPluginsView);
             addView(new Divider(context));

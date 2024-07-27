@@ -20,7 +20,7 @@ class FailedPluginsPage : SettingsPage() {
     override fun onViewBound(view: View) {
         super.onViewBound(view)
 
-        setActionBarTitle("Plugin Errors")
+        setActionBarTitle("Errores de complementos")
 
         PluginManager.failedToLoad.forEach { (file, reason) ->
             linearLayout.addView(MaterialCardView(view.context).apply {

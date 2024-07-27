@@ -25,8 +25,7 @@ object CorePlugins {
         PrivateChannelsListScroll(),
         MembersListFix(),
         Pronouns(),
-        GifPreviewFix(),
-        POCDownloader()
+        GifPreviewFix()
     )
 
     /** Loads all core plugins */
