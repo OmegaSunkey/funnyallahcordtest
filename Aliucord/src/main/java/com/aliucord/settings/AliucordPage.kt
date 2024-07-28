@@ -38,8 +38,7 @@ class AliucordPage : SettingsPage() {
         addSwitch(ctx,
             AUTO_DISABLE_ON_CRASH_KEY,
             "Desactivar automaticamente complementos con errores fatales",
-            "Cuando un complemento detenga Aliucord abruptamente, será desactivado
-            automaticamente.",
+            "Cuando un complemento detenga Aliucord abruptamente, será desactivado automaticamente.",
             true
         )
         //addSwitch(ctx, AUTO_UPDATE_ALIUCORD_KEY, "Actualizar Aliucord automaticamente", null)
@@ -52,8 +51,7 @@ class AliucordPage : SettingsPage() {
                 ctx,
                 ALIUCORD_FROM_STORAGE_KEY,
                 "Usar Aliucord desde el almacenamiento principal",
-                "Esta función es principalmente para desarrolladores, asi que no la actives a menos que sepas lo que haces. Si alguien
-                te dice que hagas esto, probablemente te esten engañando."
+                "Esta función es principalmente para desarrolladores, asi que no la actives a menos que sepas lo que haces. Si alguien te dice que hagas esto, probablemente te esten engañando."
             )
         }
 
