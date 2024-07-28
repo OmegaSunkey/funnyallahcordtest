@@ -77,8 +77,7 @@ class Crashes : SettingsPage() {
             }
         } else {
             TextView(context, null, 0, R.i.UiKit_Settings_Item_SubText).run {
-                text = "Recuerda que cada registro es accesible en la
-                carpeta de /sdcard/Aliucord/crashlogs"
+                text = "Recuerda que cada registro es accesible en la carpeta de /sdcard/Aliucord/crashlogs"
                 typeface = ResourcesCompat.getFont(context, Constants.Fonts.whitney_medium)
                 gravity = Gravity.CENTER
                 linearLayout.addView(this)
