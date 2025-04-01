@@ -53,15 +53,15 @@ internal class SupportWarn : CorePlugin(Manifest("SupportWarn")) {
             val (text, desc, key) = if (loaded.channelId == PLUGIN_REQUESTS_CHANNEL_ID) {
                 if (settings.acceptedPrdNotRequests) return@after
                 Triple(
-                    "PLEASE READ: This is not a request channel, do not request plugins!",
-                    "This is NOT A REQUESTING CHANNEL. For information on how to request a plugin, check the pins in this channel. If you have read this, type \"I understand\" into the box.",
+                    " LEASE: Este canal no sirve para peticiones de plugins, no intente hacerlo!",
+                    "ESTE CANAL NO RECIBE PETICIONES. Para más información sobre como recomendar un plugin, mire los mensajes fijados en este canal. Si leíste esto, escribe \"Entiendo.\" en la caja de texto.",
                     "acceptedPrdNotRequests"
                 )
             } else {
                 if (settings.acceptedDevNotSupport) return@after
                 Triple(
-                    "PLEASE READ: This is not a support channel, do not ask for help!",
-                    "This is NOT A SUPPORT CHANNEL. Do NOT ask for help about using or installing a plugin or theme here or you will be muted. If you have read this, type \"I understand\" into the box.",
+                    "LEASE: Este canal no es de soporte técnico, asi que no pregunte por ayuda aquí.",
+                    "ESTE CANAL NO ES PARA AYUDAR. No pregunte por ayuda sobre instalación de plugins o de temas o serás silenciado aquí. Si leíste esto, escribe \"Entiendo.\"",
                     "acceptedDevNotSupport"
                 )
             }
@@ -81,7 +81,7 @@ internal class SupportWarn : CorePlugin(Manifest("SupportWarn")) {
                     .setDescription(desc)
 
                 dialog.setOnOkListener {
-                    if (!dialog.input.contains("I understand", ignoreCase = true)) return@setOnOkListener
+                    if (!dialog.input.contains("Entiendo.", ignoreCase = true)) return@setOnOkListener
                     settings.setBool(key, true)
 
                     gateButtonLayout.visibility = View.GONE

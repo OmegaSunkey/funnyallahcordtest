@@ -28,7 +28,7 @@ internal class CoreCommands : CorePlugin(Manifest("CoreCommands")) {
     override fun start(context: Context) {
         commands.registerCommand(
             "echo",
-            "Creates Clyde message",
+            "Crea un mensaje hecho por Clyde",
             CommandsAPI.requiredMessageOption
         ) {
             CommandResult(it.getRequiredString("message"), null, false)
@@ -36,17 +36,17 @@ internal class CoreCommands : CorePlugin(Manifest("CoreCommands")) {
 
         commands.registerCommand(
             "plugins",
-            "Lists installed plugins",
+            "Muestra los plugins instalados",
             listOf(
                 Utils.createCommandOption(
                     type = ApplicationCommandType.BOOLEAN,
-                    name = "send",
-                    description = "Whether the result should be visible for everyone",
+                    name = "enviar",
+                    description = "Permite enviar la lista de plugins",
                 ),
                 Utils.createCommandOption(
                     type = ApplicationCommandType.BOOLEAN,
-                    name = "versions",
-                    description = "Whether to show the plugin versions",
+                    name = "versiones",
+                    description = "Permite mostrar las versiones de los plugins",
                 )
             )
         ) {
@@ -57,39 +57,39 @@ internal class CoreCommands : CorePlugin(Manifest("CoreCommands")) {
                 plugins.joinToString { p -> if (showVersions && p !is CorePlugin) "${p.name} (${p.manifest.version})" else p.name }
 
             if (enabled.isEmpty() && disabled.isEmpty())
-                CommandResult("No plugins installed", null, false)
+                CommandResult("Todo limpio", null, false)
             else
                 CommandResult(
                     """
-**Enabled Plugins (${enabled.size}):**
-${if (enabled.isEmpty()) "None" else "> ${formatPlugins(enabled)}"}
-**Disabled Plugins (${disabled.size}):**
-${if (disabled.isEmpty()) "None" else "> ${formatPlugins(disabled)}"}
+**Plugins activados (${enabled.size}):**
+${if (enabled.isEmpty()) "0" else "> ${formatPlugins(enabled)}"}
+**Plugins desactivados (${disabled.size}):**
+${if (disabled.isEmpty()) "0" else "> ${formatPlugins(disabled)}"}
                 """,
                     null,
                     it.getBoolOrDefault("send", false)
                 )
         }
 
-        commands.registerCommand("debug", "Posts debug info") {
+        commands.registerCommand("debug", "Muestra información de depuración") {
             val customPluginCount = PluginManager.plugins.values.count { it !is CorePlugin }
             val enabledPluginCount = visiblePlugins().count(PluginManager::isPluginEnabled)
 
             // .trimIndent() is broken sadly due to collision with Discord's Kotlin
             var str = """
-**Debug Info:**
+**Información de depuración:**
 > Discord: ${Constants.DISCORD_VERSION}
 > Aliucord: ${BuildConfig.VERSION} ${if (BuildConfig.RELEASE) "" else "(Custom)"}
 > Plugins: $customPluginCount installed, $enabledPluginCount total enabled
-> System: Android ${Build.VERSION.RELEASE} (SDK v${Build.VERSION.SDK_INT}) - ${getArchitecture()}
-> Rooted: ${getIsRooted() ?: "Unknown"}
+> Sistema: Android ${Build.VERSION.RELEASE} (SDK v${Build.VERSION.SDK_INT}) - ${getArchitecture()}
+> Root: ${getIsRooted() ?: "Sin root"}
             """
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 val manifest = File("/apex/com.android.art/apex_manifest.pb").takeIf { it.exists() }
                     ?.readBytes()
 
-                str += "> ART manifest version: ${manifest?.let { ProtobufParser.getField2(it) } ?: "Unknown"}"
+                str += "> Versión del manifiesto de ART: ${manifest?.let { ProtobufParser.getField2(it) } ?: "Desconocido"}"
             }
 
             CommandResult(str)
@@ -112,7 +112,7 @@ ${if (disabled.isEmpty()) "None" else "> ${formatPlugins(disabled)}"}
         }
         return System.getProperty("os.arch")
             ?: System.getProperty("ro.product.cpu.abi")
-            ?: "Unknown Architecture"
+            ?: "Arquitectura desconocida"
     }
 
     override fun stop(context: Context) {

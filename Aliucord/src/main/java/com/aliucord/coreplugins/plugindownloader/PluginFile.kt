@@ -34,7 +34,7 @@ internal class PluginFile(val plugin: String) : File("${Constants.PLUGINS_PATH}/
                     }
                     PluginManager.loadPlugin(Utils.appContext, this)
                     PluginManager.enablePlugin(plugin)
-                    Utils.showToast("Plugin $plugin successfully ${if (isReinstall) "re" else ""}installed!")
+                    Utils.showToast("El plugin $plugin ha sido correctamente ${if (isReinstall) "re" else ""}instalado!")
 
                     if (PluginManager.plugins[plugin]?.requiresRestart() == true)
                         Utils.promptRestart()
@@ -43,7 +43,7 @@ internal class PluginFile(val plugin: String) : File("${Constants.PLUGINS_PATH}/
                 }
             } catch (ex: IOException) {
                 logger.error(ex)
-                Utils.showToast("Failed to download $plugin: ${ex.message}")
+                Utils.showToast("Hubo un error al descargar $plugin: ${ex.message}")
                 if (this.exists()) this.delete()
             }
         }
@@ -51,7 +51,7 @@ internal class PluginFile(val plugin: String) : File("${Constants.PLUGINS_PATH}/
 
     fun uninstall(callback: Runnable? = null) {
         val success = this.delete()
-        Utils.showToast("${if (success) "Successfully uninstalled" else "Failed to uninstall"} $plugin")
+        Utils.showToast("${if (success) "$plugin ha sido correctamente desinstalado" else "No se pudo desinstalar $plugin"}")
         if (success) {
             val p = PluginManager.plugins[plugin]
             PluginManager.stopPlugin(plugin)

@@ -338,15 +338,15 @@ public final class Main {
                     } catch (FileNotFoundException ignored) {}
                 }
 
-                var sb = new StringBuilder("An unrecoverable crash occurred. ");
+                var sb = new StringBuilder("Ha ocurrido un error irrecuperable. ");
                 if (badPlugin != null) {
-                    sb.append("This crash was caused by ").append(badPlugin);
+                    sb.append("Este error fue causado por ").append(badPlugin);
                     if (disabledPlugin) {
-                        sb.append(", so I automatically disabled it for you");
+                        sb.append(", asi que lo desactivé por ti");
                     }
                     sb.append(". ");
                 }
-                sb.append("Check the crashes section in the settings for more info.");
+                sb.append("Mira la sección de crasheos en los ajustes para más información.");
 
                 Toast.makeText(Utils.getAppContext(), sb.toString(), Toast.LENGTH_LONG).show();
                 Looper.loop();
@@ -376,7 +376,7 @@ public final class Main {
         if (!dir.exists()) {
             boolean res = dir.mkdirs();
             if (!res) {
-                logger.error("Failed to create directories!", null);
+                logger.error("No se pudo crear los directorios!", null);
                 return;
             }
         }
@@ -393,12 +393,12 @@ public final class Main {
                 } else if (!name.equals("oat")) { // Some roms create this
                     if (f.isDirectory()) {
                         Utils.showToast(
-                            String.format("Found directory %s in your plugins folder. DO NOT EXTRACT PLUGIN ZIPS!", name),
+                            String.format("Encontré un directorio %s en tu carpeta de plugins. NO EXTRAIGAS LOS PLUGINS !!!!!", name),
                             true
                         );
                     } else if (name.equals("classes.dex") || name.endsWith(".json")) {
                         Utils.showToast(
-                            String.format("Found extracted plugin file %s in your plugins folder. DO NOT EXTRACT PLUGIN ZIPS!", name),
+                            String.format("Encontré que extraiste el plugin %s. NO LO HAGAS !!!!", name),
                             true
                         );
                     }
@@ -407,7 +407,7 @@ public final class Main {
             }
 
             if (!PluginManager.failedToLoad.isEmpty())
-                Utils.showToast("Some plugins failed to load. Check the plugins page for more info.");
+                Utils.showToast("Algunos plugins no pudieron cargar. Mira el apartado de plugins para mas información.");
         }
         loadedPlugins = true;
     }
@@ -422,7 +422,7 @@ public final class Main {
                 if (PluginManager.isPluginEnabled(name))
                     PluginManager.startPlugin(name);
             } catch (Throwable e) {
-                PluginManager.logger.error("Exception while starting plugin: " + name, e);
+                PluginManager.logger.error("Hubo un error al iniciar el plugin: " + name, e);
                 PluginManager.stopPlugin(name);
             }
         }
@@ -435,7 +435,7 @@ public final class Main {
             preInitWithPermissions(activity);
             PluginManager.startCorePlugins();
             startAllPlugins();
-        } else Toast.makeText(activity, "You have to grant storage permission to use Aliucord", Toast.LENGTH_LONG).show();
+        } else Toast.makeText(activity, "Tienes que dar permiso de almacenamiento para usar Aliucord", Toast.LENGTH_LONG).show();
     }
 
     private static boolean checkPermissions(AppCompatActivity activity) {
@@ -443,7 +443,7 @@ public final class Main {
             if (Environment.isExternalStorageManager()) return true;
             Toast.makeText(
                 activity,
-                "Please grant all files permission, so Aliucord can access its folder in Internal Storage",
+                "Por favor otorga los permisos para ver todos los archivos, para que Aliucord pueda acceder a su propia carpeta",
                 Toast.LENGTH_LONG
             ).show();
             activity.registerForActivityResult(

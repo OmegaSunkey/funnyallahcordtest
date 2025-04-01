@@ -53,8 +53,8 @@ public class PluginManager {
 
             try (var stream = loader.getResourceAsStream("manifest.json")) {
                 if (stream == null) {
-                    failedToLoad.put(file, "No manifest found");
-                    logger.error("Failed to load plugin " + fileName + ": No manifest found", null);
+                    failedToLoad.put(file, "Sin manifiesto");
+                    logger.error("Hubo un error al cargar el plugin " + fileName + ": Sin manifiesto", null);
                     return;
                 }
 
@@ -72,13 +72,13 @@ public class PluginManager {
                 try {
                     ReflectUtils.setField(Plugin.class, plugin, "manifest", manifest);
                 } catch (Exception e) {
-                    logger.errorToast("Failed to set manifest for " + manifest.name);
+                    logger.errorToast("No se pudo poner el manifiesto para " + manifest.name);
                 }
             }));
 
             var pluginInstance = pluginClass.newInstance();
             if (plugins.containsKey(name)) {
-                logger.error("Plugin with name " + name + " already exists", null);
+                logger.error("El plugin con el nombre de " + name + "ya existe", null);
                 return;
             }
 
@@ -95,7 +95,7 @@ public class PluginManager {
             pluginInstance.load(context);
         } catch (Throwable e) {
             failedToLoad.put(file, e);
-            logger.error("Failed to load plugin " + fileName + ":\n", e);
+            logger.error("No se pudo cargar el plugin " + fileName + ":\n", e);
         }
     }
 
@@ -105,17 +105,17 @@ public class PluginManager {
      * @param name Name of the plugin to unload
      */
     public static void unloadPlugin(String name) {
-        logger.info("Unloading plugin: " + name);
+        logger.info("Apagando plugin: " + name);
         var plugin = plugins.get(name);
 
         if (plugin instanceof CorePlugin) {
-            throw new IllegalArgumentException("Cannot unload coreplugin " + name);
+            throw new IllegalArgumentException("No se puede apagar un plugin esencial" + name);
         }
 
         if (plugin != null) try {
             plugin.unload(Utils.getAppContext());
             plugins.remove(name);
-        } catch (Throwable e) { logger.error("Exception while unloading plugin: " + name, e); }
+        } catch (Throwable e) { logger.error("Hubo un error al intentar apagar el plugin: " + name, e); }
     }
 
     /**
@@ -128,7 +128,7 @@ public class PluginManager {
         Main.settings.setBool(getPluginPrefKey(name), true);
         try {
             startPlugin(name);
-        } catch (Throwable e) { logger.error("Exception while starting plugin: " + name, e); }
+        } catch (Throwable e) { logger.error("Hubo un error al inicial el plugin: " + name, e); }
     }
 
     /**
@@ -141,7 +141,7 @@ public class PluginManager {
         Main.settings.setBool(getPluginPrefKey(name), false);
         try {
             stopPlugin(name);
-        } catch (Throwable e) { logger.error("Exception while stopping plugin: " + name, e); }
+        } catch (Throwable e) { logger.error("Hubo un error al intentar parar el plugin: " + name, e); }
     }
 
     /**
@@ -160,15 +160,15 @@ public class PluginManager {
      * @param name Name of the plugin to start
      */
     public static void startPlugin(String name) {
-        logger.info("Starting plugin: " + name);
+        logger.info("Iniciando plugin: " + name);
         try {
             long startTime = System.currentTimeMillis();
 
             Objects.requireNonNull(plugins.get(name)).start(Utils.getAppContext());
 
-            logger.info("Started plugin: " + name + " in " + (System.currentTimeMillis() - startTime) + " milliseconds");
+            logger.info("Se inició el plugin: " + name + " in " + (System.currentTimeMillis() - startTime) + " milliseconds");
 
-        } catch (Throwable e) { logger.error("Exception while starting plugin: " + name, e); }
+        } catch (Throwable e) { logger.error("Hubo un error al iniciar el plugin: " + name, e); }
     }
 
     /**
@@ -177,16 +177,16 @@ public class PluginManager {
      * @param name Name of the plugin to stop
      */
     public static void stopPlugin(String name) {
-        logger.info("Stopping plugin: " + name);
+        logger.info("Parando plugin: " + name);
         try {
             Plugin p = plugins.get(name);
 
             if (p instanceof CorePlugin && ((CorePlugin) p).isRequired()) {
-                throw new IllegalArgumentException("Cannot stop required coreplugin " + name);
+                throw new IllegalArgumentException("No se puede parar el plugin esencial " + name);
             }
 
             Objects.requireNonNull(p).stop(Utils.getAppContext());
-        } catch (Throwable e) { logger.error("Exception while stopping plugin " + name, e); }
+        } catch (Throwable e) { logger.error("Hubo un error al intentar parar el plugin " + name, e); }
     }
 
     /**
@@ -195,8 +195,8 @@ public class PluginManager {
      * @param name Name of the plugin to remount
      */
     public static void remountPlugin(String name) {
-        if (!plugins.containsKey(name)) throw new IllegalArgumentException("No such plugin: " + name);
-        if (!isPluginEnabled(name)) throw new IllegalArgumentException("Plugin not enabled: " + name);
+        if (!plugins.containsKey(name)) throw new IllegalArgumentException("No existe el plugin: " + name);
+        if (!isPluginEnabled(name)) throw new IllegalArgumentException("Este plugin no se ha iniciado: " + name);
         stopPlugin(name);
         unloadPlugin(name);
         loadPlugin(Utils.getAppContext(), new File(Constants.PLUGINS_PATH, name + ".zip"));
@@ -260,12 +260,12 @@ public class PluginManager {
         };
 
         for (Plugin p : corePlugins) {
-            logger.info("Loading coreplugin: " + p.getName());
+            logger.info("Cargando plugin esencial: " + p.getName());
             try {
                 plugins.put(p.getName(), p);
                 p.load(context);
             } catch (Throwable e) {
-                logger.errorToast("Failed to load coreplugin " + p.getName(), e);
+                logger.errorToast("Hubo un error al cargar el plugin esencial " + p.getName(), e);
             }
         }
     }

@@ -213,12 +213,12 @@ public class CommandsAPI {
 
                         detailedError = String.format(
                             Locale.ENGLISH,
-                            "Oops! Something went wrong while running this command:\n```java\n%s```\n" +
-                                "Please search for this error on the Aliucord server to see if it's a known issue. " +
-                                "If it isn't, report it to the plugin %s%s.\n\n" +
+                            "Oops! Algo salió mal al intentar usar este comando:\n```java\n%s```\n" +
+                                "Por favor busca este error en el servidor de Aliucord para ver si ya se conoce sobre este error. " +
+                                "Si no, reportalo %s%s.\n\n" +
                                 "Debug:```\nCommand: %s\nPlugin: %s v%s\nDiscord v%s\nAndroid %s (SDK %d)\nAliucord %s %s```\nArguments:```\n%s```\n",
                             t,
-                            manifest.authors.length == 1 ? "author" : "authors",
+                            manifest.authors.length == 1 ? "al desarrollador" : "a los desarrolladores",
                             manifest.authors.length != 0 ? " (" + TextUtils.join(", ", manifest.authors) + ")" : "",
                             name,
                             pluginName,

@@ -31,7 +31,7 @@ internal class Modal(private val author: String, private val repo: String) : Set
     override fun onViewBound(view: View) {
         super.onViewBound(view)
 
-        setActionBarTitle("Plugin downloader")
+        setActionBarTitle("Descargador de plugins")
         setActionBarSubtitle("$author/$repo")
 
         val ctx = view.context
@@ -43,7 +43,7 @@ internal class Modal(private val author: String, private val repo: String) : Set
                     val pw = PrintWriter(sw)
                     throwable!!.printStackTrace(pw)
 
-                    text = "An error occurred:\n\n$sw"
+                    text = "Ocurrió un error:\n\n$sw"
                     setTextIsSelectable(true)
                     linearLayout.addView(this)
                 }
@@ -71,7 +71,7 @@ internal class Modal(private val author: String, private val repo: String) : Set
                     if (name == "default") return@mapNotNull null
                     val plugin = PluginFile(name)
                     val installed = plugin.isInstalled
-                    val title = "${if (installed) "Uninstall" else "Install"} $name v${info.version}"
+                    val title = "${if (installed) "Desinstalar" else "Instalar"} $name v${info.version}"
                     PluginCardInfo(plugin, title, installed, info.minimumDiscordVersion)
                 }.sortedBy { it.title }.forEach { (file, title, exists, minimumDiscordVersion) ->
                     val btn = if (exists) DangerButton(ctx) else Button(ctx)

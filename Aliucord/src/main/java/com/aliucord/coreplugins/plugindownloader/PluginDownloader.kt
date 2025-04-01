@@ -65,7 +65,7 @@ internal class PluginDownloader : CorePlugin(Manifest("PluginDownloader")) {
                         val parts = attachment.filename.split('.')
                         if (parts.size == 2 && parts[1] == "zip" && parts[0] != "Aliucord") {
                             val plugin = PluginFile(parts[0])
-                            addEntry(layout, "${if (plugin.isInstalled) "Reinstall" else "Install"} ${plugin.name}") {
+                            addEntry(layout, "${if (plugin.isInstalled) "Reinstalar" else "Instalar"} ${plugin.name}") {
                                 plugin.install(attachment.url)
                                 actions.dismiss()
                             }
@@ -81,7 +81,7 @@ internal class PluginDownloader : CorePlugin(Manifest("PluginDownloader")) {
                                 val repo = group(2)!!
                                 val name = group(3)!!
                                 val plugin = PluginFile(name)
-                                addEntry(layout, "${if (plugin.isInstalled) "Reinstall" else "Install"} $name") {
+                                addEntry(layout, "${if (plugin.isInstalled) "Reinstalar" else "Instalar"} $name") {
                                     plugin.install(author, repo)
                                     actions.dismiss()
                                 }
@@ -93,7 +93,7 @@ internal class PluginDownloader : CorePlugin(Manifest("PluginDownloader")) {
                             val author = group(1)!!
                             val repo = group(2)!!
 
-                            addEntry(layout, "Open PluginDownloader") {
+                            addEntry(layout, "Abrir el descargador de Plugins") {
                                 Utils.openPageWithProxy(it.context, Modal(author, repo))
                                 actions.dismiss()
                             }
